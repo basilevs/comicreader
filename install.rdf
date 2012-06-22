@@ -23,5 +23,6 @@
     <em:description>Slideshow for web comic sites.</em:description>
     <em:creator>Gulevich Vasili</em:creator>
     <em:homepageURL>https://github.com/basilevs/comicreader</em:homepageURL>
+	<em:bootstrap>true</em:bootstrap>
   </Description>      
 </RDF>
