@@ -1,37 +1,25 @@
+//Many components were copied from https://github.com/dgutov/bmreplace
+
+Components.utils.import("resource://gre/modules/Services.jsm");
+var console = Services.console;
+
+var addon = {
+  getResourceURI: function(filePath) ({
+    spec: __SCRIPT_URI_SPEC__ + "/../" + filePath
+  })
+};
+
+
+function include(path) {
+  Services.scriptloader.loadSubScript(addon.getResourceURI(path).spec, this);
+}
 
 function startShow() {
 	alert("Show started!");
 }
 
-function Unloader(container) {
-	try {
-		if (container.unloader) {
-			container.unloader.unload();
-		}
-	} catch(e) {
-	}
-	this.callbacks = [];
-	this.container = container;
-	container.unolader = this;
-}
-
-Unloader.prototype = {
-	add: function (callback) {
-		this.callbacks.push(callback);
-	},
-	unload: function () {
-		this.container.unloader = null;
-		for(i in this.callbacks) {
-			this.callbacks[i]();
-		}
-	}
-};
-
-
-function startup(data, reason) {
-	var unloader = new Unloader(window);
+function modify(window) {
 	// add button
-	let doc = window.document;
 	let button = doc.createElement("toolbarbutton");
 	button.setAttribute("id", "comicreader_showButton");
 	button.setAttribute("label", "Start slideshow");
@@ -40,14 +28,17 @@ function startup(data, reason) {
 //	button.style.listStyleImage = "url(" + icon + ")";
 	button.addEventListener("command", startShow, false);
 	doc.getElementById("BrowserToolbarPalette").insertBefore(button, null);
-	unloader.add(function() {
+	unload(function() {
 		button.parentNode.removeChild(button);
-	});
-	
+	}, window);
 }
 
+function startup(data, reason) {
+	include("includes/utils.js");
+	watchWindows(modify, "navigator:browser");
+}
 
 function shutdown(data, reason) {
-	window.unloader.unload();
+	unload();
 }
 
