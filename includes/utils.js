@@ -138,7 +138,7 @@ function unload(callback, container) {
   if (callback == null) {
     unloaders.slice().forEach(function(unloader) unloader());
     unloaders.length = 0;
-    return;
+    return null;
   }
 
   // The callback is bound to the lifetime of the container if we have one
