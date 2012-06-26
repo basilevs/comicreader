@@ -4,5 +4,6 @@ function startSlideView() {
 	let handler = DocumentHandler.get(doc);
 	if (!handler) 
 		throw new Error("Sorry can't work with "+doc.location+". Please report to https://github.com/basilevs/comicreader/issues")
-	new WindowHandler(window, handler);
+	let wh = new WindowHandler(window, handler);
+	wh.next();
 }
